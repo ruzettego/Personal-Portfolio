@@ -148,7 +148,7 @@
     color: var(--text-dark);
     margin-bottom: 0.6rem;
   }
-  .hero-name span { color: var(--purple-600); }
+  .hero-name span { color: var(--text-dark); }
   .hero-role {
     font-size: 1.1rem;
     font-weight: 300;
