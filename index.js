@@ -63,11 +63,16 @@
   function sendMessage() {
     const name = document.getElementById('fname').value.trim();
     const email = document.getElementById('femail').value.trim();
+    const subject = document.getElementById('fsubject').value.trim() || 'Website inquiry';
     const msg = document.getElementById('fmessage').value.trim();
     if (!name || !email || !msg) {
       alert('Please fill in your name, email, and message.');
       return;
     }
+
+    const mailto = `mailto:Ruzettego@yahoo.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${msg}`)}`;
+    window.location.href = mailto;
+
     const formFields = document.querySelectorAll('.form-group, .form-row, .btn-send, .form-title');
     formFields.forEach(el => el.style.display = 'none');
     const success = document.getElementById('formSuccess');
