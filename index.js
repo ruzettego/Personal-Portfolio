@@ -60,7 +60,9 @@
   }
 
   // Send message
-  function sendMessage() {
+  async function sendMessage(event) {
+    event.preventDefault();
+    const form = document.getElementById('contactForm');
     const name = document.getElementById('fname').value.trim();
     const email = document.getElementById('femail').value.trim();
     const subject = document.getElementById('fsubject').value.trim() || 'Website inquiry';
@@ -70,13 +72,28 @@
       return;
     }
 
-    const mailto = `mailto:Ruzettego@yahoo.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${msg}`)}`;
-    window.location.href = mailto;
+    const formData = new FormData(form);
+    formData.set('subject', subject);
+    formData.set('message', msg);
 
-    const formFields = document.querySelectorAll('.form-group, .form-row, .btn-send, .form-title');
-    formFields.forEach(el => el.style.display = 'none');
-    const success = document.getElementById('formSuccess');
-    success.style.display = 'flex';
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Accept: 'application/json'
+        }
+      });
+
+      if (!response.ok) throw new Error('Email service failed.');
+
+      form.querySelectorAll('.form-group, .form-row, .btn-send, .form-title').forEach(el => el.style.display = 'none');
+      document.getElementById('formSuccess').style.display = 'flex';
+      form.reset();
+    } catch (error) {
+      alert('Unable to send message right now. Please try again later.');
+      console.error(error);
+    }
   }
 
   // Active nav link on scroll
